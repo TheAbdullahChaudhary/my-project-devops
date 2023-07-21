@@ -1,17 +1,13 @@
-# This workflow will build a Java project with Gradle
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
-
 name: Java CI with Gradle
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build-java:
-
     runs-on: ubuntu-latest
     
     steps:
@@ -22,8 +18,11 @@ jobs:
       with:
         java-version: 1.8
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+    - name: Check and fix execute permission for gradlew
+      run: |
+        if [ ! -x "./gradlew" ]; then
+          chmod +x ./gradlew
+        fi
 
     - name: Build with Gradle
       run: ./gradlew build
@@ -35,4 +34,3 @@ jobs:
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-         
